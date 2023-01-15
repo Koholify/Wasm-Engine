@@ -28,18 +28,27 @@ int main(void) {
 	}
 	printf("\nLinked List Complete\n");
 
-	int * ints;
-	kc_arr_init(ints);
+	klm_vec2 * ints = NULL;
+	// kc_arr_init(ints);
+	kc_arr_setcap(ints, 10);
 
-	for (int i = 0; i < 5; i++) {
-		kc_arr_push(ints, i * i);
+	printf("%p set cap to 10\n", ints);
+	kc_array_header * h = kc_arr_header(ints);
+	printf("Length: %lu, Capacity %lu, Size: %lu\n", h->length, h->capacity, h->size);
+
+	for (int i = 0; i < 16; i++) {
+		klm_vec2 v = {i, i*i};
+		kc_arr_push(ints, v);
 	}
 
 	printf("[");
 	for (int i = 0; i < kc_arr_len(ints); i++) {
-		printf(" %d ", ints[i]);
+		printf(" (%f, %f) ", ints[i].x, ints[i].y);
 	}
 	printf("]\n");
+	
+	printf("Length: %lu, Capacity %lu, Size: %lu\n", h->length, h->capacity, h->size);
+	kc_arr_free(ints);
 
 	return 0;
 }

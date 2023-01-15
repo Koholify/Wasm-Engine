@@ -1,4 +1,5 @@
 #include "kc/array.h"
+#include <stdio.h>
 #include <stdlib.h>
 
 void * kc_arr_grow(void * a, size_t size, size_t cap) {
