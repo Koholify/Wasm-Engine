@@ -1,0 +1,2 @@
+/usr/bin/ar qc libklm.a CMakeFiles/klm.dir/Math/src/Linalg.c.o CMakeFiles/klm.dir/Math/src/Test.c.o
+/usr/bin/ranlib libklm.a

@@ -1,0 +1,2 @@
+/usr/bin/ar qc libklm.a CMakeFiles/klm.dir/src/klm.c.o
+/usr/bin/ranlib libklm.a

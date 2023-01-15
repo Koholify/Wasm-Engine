@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/miko/Projects/Wasm-Engine/Math/src/klm.c
+klm.h
+/home/miko/Projects/Wasm-Engine/Math/src/klm.h
+stdio.h
+-
+
+Math/include/klm.h
+

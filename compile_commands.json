@@ -1,0 +1,22 @@
+[
+{
+  "directory": "/home/miko/Projects/Wasm-Engine",
+  "command": "/usr/bin/clang  -I/home/miko/Projects/Wasm-Engine/Math/include -I/home/miko/Projects/Wasm-Engine/Collections/include -std=gnu11 -o CMakeFiles/KGE.dir/src/main.c.o -c /home/miko/Projects/Wasm-Engine/src/main.c",
+  "file": "/home/miko/Projects/Wasm-Engine/src/main.c"
+},
+{
+  "directory": "/home/miko/Projects/Wasm-Engine/Math",
+  "command": "/usr/bin/clang  -I/home/miko/Projects/Wasm-Engine/Math/include -std=gnu11 -o CMakeFiles/klm.dir/src/klm.c.o -c /home/miko/Projects/Wasm-Engine/Math/src/klm.c",
+  "file": "/home/miko/Projects/Wasm-Engine/Math/src/klm.c"
+},
+{
+  "directory": "/home/miko/Projects/Wasm-Engine/Collections",
+  "command": "/usr/bin/clang  -I/home/miko/Projects/Wasm-Engine/Collections/include -std=gnu11 -o CMakeFiles/kc.dir/src/array.c.o -c /home/miko/Projects/Wasm-Engine/Collections/src/array.c",
+  "file": "/home/miko/Projects/Wasm-Engine/Collections/src/array.c"
+},
+{
+  "directory": "/home/miko/Projects/Wasm-Engine/Collections",
+  "command": "/usr/bin/clang  -I/home/miko/Projects/Wasm-Engine/Collections/include -std=gnu11 -o CMakeFiles/kc.dir/src/llist.c.o -c /home/miko/Projects/Wasm-Engine/Collections/src/llist.c",
+  "file": "/home/miko/Projects/Wasm-Engine/Collections/src/llist.c"
+}
+]

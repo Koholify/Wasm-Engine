@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/miko/Projects/Wasm-Engine/src/main.c
+stdio.h
+-
+klm.h
+/home/miko/Projects/Wasm-Engine/src/klm.h
+kc/llist.h
+/home/miko/Projects/Wasm-Engine/src/kc/llist.h
+kc/array.h
+/home/miko/Projects/Wasm-Engine/src/kc/array.h
+
+Collections/include/kc/array.h
+stdlib.h
+-
+
+Collections/include/kc/llist.h
+
+Math/include/klm.h
+
