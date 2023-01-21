@@ -1,1 +1,0 @@
-/usr/bin/clang -rdynamic CMakeFiles/KGE.dir/src/main.c.o -o KGE  Math/libklm.a Collections/libkc.a 

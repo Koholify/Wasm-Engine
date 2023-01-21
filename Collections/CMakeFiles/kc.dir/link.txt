@@ -1,2 +1,0 @@
-/usr/bin/ar qc libkc.a CMakeFiles/kc.dir/src/array.c.o CMakeFiles/kc.dir/src/llist.c.o
-/usr/bin/ranlib libkc.a

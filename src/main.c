@@ -47,6 +47,7 @@ int main(void) {
 	}
 	printf("]\n");
 	
+	h = kc_arr_header(ints);
 	printf("Length: %lu, Capacity %lu, Size: %lu\n", h->length, h->capacity, h->size);
 	kc_arr_free(ints);
 
