@@ -33,22 +33,45 @@ int main(void) {
 	kc_arr_setcap(ints, 10);
 
 	printf("%p set cap to 10\n", ints);
-	kc_array_header * h = kc_arr_header(ints);
-	printf("Length: %lu, Capacity %lu, Size: %lu\n", h->length, h->capacity, h->size);
+	struct kc_array_header * h = kc_arr_header(ints);
+	printf("Length: %lu, Capacity %lu\n", h->length, h->capacity);
 
-	for (int i = 0; i < 16; i++) {
+	for (int i = 0; i < 8; i++) {
 		klm_vec2 v = {i, i*i};
 		kc_arr_push(ints, v);
 	}
 
 	printf("[");
 	for (int i = 0; i < kc_arr_len(ints); i++) {
-		printf(" (%f, %f) ", ints[i].x, ints[i].y);
+		printf(" (%.2f, %.2f) ", ints[i].x, ints[i].y);
+	}
+	printf("]\n");
+	
+	klm_vec2 v = { 4.5f, 12.52f };
+	klm_vec2 v2 = { 3.1f, 54.67f };
+	klm_vec2 v3 = { 4.1f, 18.67f };
+	kc_arr_ins(ints, 3, v);
+	kc_arr_ins(ints, 0, v2);
+	kc_arr_ins(ints, 8, v3);
+
+	printf("[");
+	for (int i = 0; i < kc_arr_len(ints); i++) {
+		printf(" (%.2f, %.2f) ", ints[i].x, ints[i].y);
+	}
+	printf("]\n");
+
+	v = kc_arr_pop(ints);
+	v = kc_arr_pop(ints);
+	kc_arr_remove(ints, 2);
+
+	printf("[");
+	for (int i = 0; i < kc_arr_len(ints); i++) {
+		printf(" (%.2f, %.2f) ", ints[i].x, ints[i].y);
 	}
 	printf("]\n");
 	
 	h = kc_arr_header(ints);
-	printf("Length: %lu, Capacity %lu, Size: %lu\n", h->length, h->capacity, h->size);
+	printf("Length: %lu, Capacity %lu\n", h->length, h->capacity);
 	kc_arr_free(ints);
 
 	return 0;
