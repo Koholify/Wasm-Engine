@@ -6,6 +6,8 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS true)
 project(KGE LANGUAGES C)
 set(CMAKE_C_STANDARD 11)
 
+add_compile_options(-Wall -Wextra -pedantic -Werror)
+
 add_subdirectory(Math)
 add_subdirectory(Collections)
 

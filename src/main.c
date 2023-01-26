@@ -10,14 +10,14 @@ int main(void) {
 
 	printf("vec y is %f\n", vec.y);
 	
-	kc_llist list = { };
+	kc_llist list = { 0 };
 	kc_llist_add_tail(&list, (void *) 5);
 	kc_llist_add_tail(&list, (void *) 15);
 	kc_llist_add_tail(&list, (void *) 25);
 
 	kc_llist_node * c = list.head;
 	while (c) {
-		printf("%p %p\n", c->data, c->next);
+		printf("%p %p\n", c->data, (void*)c->next);
 		c = c->next;
 	}
 	printf("loop end \n");
@@ -32,7 +32,7 @@ int main(void) {
 	// kc_arr_init(ints);
 	kc_arr_setcap(ints, 10);
 
-	printf("%p set cap to 10\n", ints);
+	printf("%p set cap to 10\n", (void*)ints);
 	struct kc_array_header * h = kc_arr_header(ints);
 	printf("Length: %lu, Capacity %lu\n", h->length, h->capacity);
 
@@ -42,7 +42,7 @@ int main(void) {
 	}
 
 	printf("[");
-	for (int i = 0; i < kc_arr_len(ints); i++) {
+	for (size_t i = 0; i < kc_arr_len(ints); i++) {
 		printf(" (%.2f, %.2f) ", ints[i].x, ints[i].y);
 	}
 	printf("]\n");
@@ -55,7 +55,7 @@ int main(void) {
 	kc_arr_ins(ints, 8, v3);
 
 	printf("[");
-	for (int i = 0; i < kc_arr_len(ints); i++) {
+	for (size_t i = 0; i < kc_arr_len(ints); i++) {
 		printf(" (%.2f, %.2f) ", ints[i].x, ints[i].y);
 	}
 	printf("]\n");
@@ -65,7 +65,7 @@ int main(void) {
 	kc_arr_remove(ints, 2);
 
 	printf("[");
-	for (int i = 0; i < kc_arr_len(ints); i++) {
+	for (size_t i = 0; i < kc_arr_len(ints); i++) {
 		printf(" (%.2f, %.2f) ", ints[i].x, ints[i].y);
 	}
 	printf("]\n");

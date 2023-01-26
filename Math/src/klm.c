@@ -387,7 +387,8 @@ klm_mat4 	klm_mult_sm4	(float a, 	klm_mat4 b)
 	{
 		klm_mult_sv4(a, b.i),
 		klm_mult_sv4(a, b.j),
-		klm_mult_sv4(a, b.k)
+		klm_mult_sv4(a, b.k),
+		klm_mult_sv4(a, b.l)
 	};
 	return m;
 }

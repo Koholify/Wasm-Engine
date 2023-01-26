@@ -2,7 +2,6 @@
 #include "kc/llist.h"
 
 void kc_llist_free(kc_llist * list) {
-	int i = 0;
 	while (list->head) {
 		kc_llist_node * current = list->head;
 		list->head = current->next;
