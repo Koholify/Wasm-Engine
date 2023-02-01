@@ -1,3 +1,4 @@
+#include <stddef.h>
 #include <stdio.h>
 #include "klm.h"
 #include "kc/llist.h"
