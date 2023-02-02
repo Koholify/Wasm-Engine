@@ -63,6 +63,7 @@ int main(void) {
 
 	v = kc_arr_pop(ints);
 	v = kc_arr_pop(ints);
+	kc_arr_remove(ints, 7);
 	kc_arr_remove(ints, 2);
 
 	printf("[");
