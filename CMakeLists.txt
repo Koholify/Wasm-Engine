@@ -3,8 +3,7 @@ cmake_minimum_required(VERSION 3.0)
 set(CMAKE_C_COMPILER gcc)
 set(CMAKE_EXPORT_COMPILE_COMMANDS true)
 
-project(KGE LANGUAGES C)
-set(CMAKE_C_STANDARD 11)
+project(KGE)
 
 add_compile_options(-Wall -Wextra -pedantic -Werror -std=c11)
 
