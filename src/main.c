@@ -81,13 +81,16 @@ int main(void) {
 	int * int_set = NULL;
 	kc_set_init(int_set, NULL);
 
-	h = kc_arr_header(int_set);
-	kc_set_item_pair(int_set);
 	kc_set_set(int_set, (size_t)505);
+	h = kc_arr_header(int_set);
 	printf("Length: %lu, Capacity %lu, hash %p\n", h->length, h->capacity, (void*)h->hash);
 	printf("Hash test %d\n", ((int)(h->hash(3513562354) % 16)));
 	printf("Hash test %d\n", ((int)(h->hash(3513562355) % 16)));
 	printf("Hash test %d\n", ((int)(h->hash(3513562356) % 16)));
+
+	for(size_t i = 0; i < kc_set_cap(int_set); i++) {
+		printf("Hash[%lu]: %d, used: %d\n", i, int_set[i], kc_set_is_used(int_set)[i]);
+	}
 
 	return 0;
 }
