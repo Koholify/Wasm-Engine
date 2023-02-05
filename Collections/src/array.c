@@ -21,7 +21,7 @@ void * kc_arr_grow(void * a, size_t size, size_t cap) {
 }
 
 void kc_arr_free(void *a) {
-struct kc_array_header * header = kc_arr_header(a);
+	struct kc_array_header * header = kc_arr_header(a);
 	free(header);
 }
 
