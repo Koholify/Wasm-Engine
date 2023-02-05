@@ -3,6 +3,7 @@
 #include "klm.h"
 #include "kc/llist.h"
 #include "kc/array.h"
+#include "kc/set.h"
 
 int main(void) {
 	printf("Hello World!\n");
@@ -75,6 +76,18 @@ int main(void) {
 	h = kc_arr_header(ints);
 	printf("Length: %lu, Capacity %lu\n", h->length, h->capacity);
 	kc_arr_free(ints);
+
+	printf("Start Hash test\n");
+	int * int_set = NULL;
+	kc_set_init(int_set, NULL);
+
+	h = kc_arr_header(int_set);
+	kc_set_item_pair(int_set);
+	kc_set_set(int_set, (size_t)505);
+	printf("Length: %lu, Capacity %lu, hash %p\n", h->length, h->capacity, (void*)h->hash);
+	printf("Hash test %d\n", ((int)(h->hash(3513562354) % 16)));
+	printf("Hash test %d\n", ((int)(h->hash(3513562355) % 16)));
+	printf("Hash test %d\n", ((int)(h->hash(3513562356) % 16)));
 
 	return 0;
 }

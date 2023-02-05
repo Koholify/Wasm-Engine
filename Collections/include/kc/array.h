@@ -1,6 +1,7 @@
 #ifndef _KC_ARRAY_H
 #define _KC_ARRAY_H
 
+#include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -24,6 +25,7 @@
 struct kc_array_header {
 	size_t capacity;
 	size_t length;
+	size_t (*hash)(size_t);
 };
 
 void * kc_arr_grow(void * a, size_t size, size_t cap);
