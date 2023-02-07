@@ -5,19 +5,24 @@
 #include <stdbool.h>
 #include "kc/array.h"
 
-#define kc_set_len(t) (kc_arr_len(t))
-#define kc_set_cap(t) (kc_arr_cap(t))
-#define kc_set_hash(t) (kc_arr_header(t)->hash)
-#define kc_set_is_used(t) (kc_arr_header(t)->is_used)
-#define _kc_set_get_hash(t, v) (kc_set_hash(t)(v) % kc_arr_cap(t))
-#define kc_set_has(t, v) (kc_set_is_used(t)[_kc_set_get_hash(t, v)])
-#define kc_set_set(t, v) size_t hashed = _kc_set_get_hash(t, v);(t[hashed] = v);(kc_set_is_used(t)[hashed]?0:kc_arr_len(t)++);kc_set_is_used(t)[hashed] = true;
+typedef size_t(*int_hash)(size_t);
 
-#define kc_set_init(t, h) ((t) = kc_arr_grow((void*)t, sizeof(*t) + sizeof(bool), 16), \
-																(kc_set_hash(t) = h ? h : kc_set_defaultHash), \
-																(kc_set_is_used(t) = (bool*)(t + kc_arr_cap(t))), \
-																(memset(kc_set_is_used(t), 0, sizeof(bool) * 16)))
+typedef struct kc_set_item {
+	bool is_used;
+	size_t item;
+} kc_set_item;
+
+typedef struct kc_set {
+	kc_set_item* data;
+} kc_set;
 
 size_t kc_set_defaultHash(size_t in);
+kc_set kc_set_init(size_t len);
+size_t kc_set_len(kc_set t);
+size_t kc_set_cap(kc_set t);
+int_hash kc_set_hash(kc_set t);
+
+bool kc_set_has(kc_set set, size_t val);
+void kc_set_set(kc_set * set, size_t val);
 
 #endif

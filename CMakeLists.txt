@@ -5,7 +5,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS true)
 
 project(KGE)
 
-add_compile_options(-Wall -Wextra -pedantic -Werror -std=c11)
+add_compile_options(-Wall -Wextra -pedantic -Werror -std=c11 -g)
 
 add_subdirectory(Math)
 add_subdirectory(Collections)
