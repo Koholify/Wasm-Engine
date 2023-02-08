@@ -82,11 +82,40 @@ int main(void) {
 	kc_set_set(&set, 231);
 	kc_set_set(&set, 641);
 	kc_set_set(&set, 79);
-	kc_set_set(&set, 5111);
-	kc_set_set(&set, 694);
-	kc_set_set(&set, 45952);
-	kc_set_set(&set, 48782);
-	kc_set_set(&set, 1236);
+
+	kc_set set2 = kc_set_init(16);
+	kc_set_set(&set2, 5111);
+	kc_set_set(&set2, 641);
+	kc_set_set(&set2, 45952);
+	kc_set_set(&set2, 48782);
+	kc_set_set(&set2, 231);
+	
+	kc_set set3 = kc_set_intersect(set, set2);
+	kc_set set4 = kc_set_union(set, set2);
+	kc_set set5 = kc_set_difference(set, set2);
+
+	kc_set_iterator it = kc_set_iter(set3);
+	size_t val;
+	while(kc_set_next(&it, &val)) {
+		printf("%lu, ", val);
+	}
+	printf("\n");
+
+	it = kc_set_iter(set4);
+	while(kc_set_next(&it, &val)) {
+		printf("%lu, ", val);
+	}
+	printf("\n");
+
+	it = kc_set_iter(set5);
+	while(kc_set_next(&it, &val)) {
+		printf("%lu, ", val);
+	}
+	
+	printf("\n");
+	kc_set_free(set);
+	kc_set_free(set2);
+	kc_set_free(set3);
 
 	return 0;
 }
