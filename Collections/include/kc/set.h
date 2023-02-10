@@ -68,6 +68,6 @@ typedef struct kc_strset_iterator {
 } kc_strset_iterator;
 
 kc_strset_iterator kc_strset_iter(kc_strset a);
-bool kc_strset_next(kc_strset_iterator* it, const char* next);
+bool kc_strset_next(kc_strset_iterator* it, const char** next);
 
 #endif

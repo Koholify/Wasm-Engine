@@ -5,6 +5,8 @@
 #include "kc/array.h"
 #include "kc/set.h"
 
+void print_ss(kc_strset s);
+
 int main(void) {
 	printf("Hello World!\n");
 
@@ -116,6 +118,49 @@ int main(void) {
 	kc_set_free(set);
 	kc_set_free(set2);
 	kc_set_free(set3);
+	kc_set_free(set4);
+	kc_set_free(set5);
+
+	kc_strset ss = kc_strset_init(16);
+	kc_strset ss2 = kc_strset_init(16);
+
+	kc_strset_set(&ss, "Hello");
+	kc_strset_set(&ss, "World");
+	kc_strset_set(&ss, "Set");
+	kc_strset_set(&ss, "One");
+
+	kc_strset_set(&ss2, "Two");
+	kc_strset_set(&ss2, "Sets");
+	kc_strset_set(&ss2, "Wowo");
+	kc_strset_set(&ss2, "Hello");
+	kc_strset_set(&ss2, "Goodbye");
+	kc_strset_set(&ss2, "One");
+
+	print_ss(ss);
+
+	printf("\nset 2\n");
+	print_ss(ss2);
+
+	kc_strset ss3 = kc_strset_union(ss, ss2);
+	kc_strset ss4 = kc_strset_intersect(ss, ss2);
+	kc_strset ss5 = kc_strset_difference(ss, ss2);
+
+	printf("\nunion\n");
+	print_ss(ss3);
+	printf("\nintersect\n");
+	print_ss(ss4);
+	printf("\ndiff\n");
+	print_ss(ss5);
 
 	return 0;
+}
+
+void print_ss(kc_strset s) {
+	const char* str;
+	kc_strset_iterator sit = kc_strset_iter(s);
+	printf("[ ");
+	while (kc_strset_next(&sit, &str)) {
+		printf("%s, ", str);
+	}
+	printf("]\n");
 }
