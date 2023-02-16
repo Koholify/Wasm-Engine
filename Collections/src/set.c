@@ -84,7 +84,6 @@ kc_set kc_set_init(size_t len) {
 	kc_set set;
 	set.data = NULL;
 	kc_arr_setcap(set.data, len);
-	kc_arr_header(set.data)->hash = kc_int_hash;
 	memset(set.data, 0, sizeof(kc_set_item) * len);
 	return set;
 }
@@ -93,7 +92,6 @@ kc_strset kc_strset_init(size_t len) {
 	kc_strset set;
 	set.data = NULL;
 	kc_arr_setcap(set.data, len);
-	kc_arr_header(set.data)->str_hash = kc_str_hash;
 	memset(set.data, 0, sizeof(kc_strset_item) * len);
 	return set;
 }
@@ -118,22 +116,25 @@ size_t kc_strset_cap(kc_strset t) {
 	return kc_arr_cap(t.data);
 }
 
-int_hash kc_set_hash(kc_set t) {
-	return kc_arr_header(t.data)->hash;
+int_hash kc_set_hash() {
+	return kc_int_hash;
 }
-str_hash kc_strset_hash(kc_strset t) {
-	return kc_arr_header(t.data)->str_hash;
+str_hash kc_strset_hash() {
+	return kc_str_hash;
+}
+
+int kc_set_getIndex(kc_set set, size_t val) {
+	size_t i = _set_get_hash(set, val) % kc_set_cap(set);
+	while (set.data[i].is_used) {
+		if (set.data[i].item == val) return (int)i;
+		if (++i >= kc_set_cap(set)) i = 0;
+	}
+	return -1;
 }
 
 bool kc_set_has(kc_set set, size_t val) {
-	size_t i = _set_get_hash(set, val) % kc_set_cap(set);
-	while (set.data[i].is_used) {
-		if (set.data[i].item == val) {
-			return true;
-		}
-		i = (i + 1 >= kc_set_cap(set)) ? 0 : (i + 1);
-	}
-	return false;
+	int i = kc_set_getIndex(set, val);
+	return i >= 0;
 }
 
 static void _set_item(kc_set set, size_t val, bool isNew) {
@@ -260,15 +261,18 @@ bool kc_set_next(kc_set_iterator* it, size_t* next) {
 	return false;
 }
 
-bool kc_strset_has(kc_strset set, const char* val) {
+int kc_strset_getIndex(kc_strset set, const char* val) {
 	size_t i = _strset_get_hash(set, val) % kc_strset_cap(set);
 	while (set.data[i].is_used) {
-		if (!strncmp(set.data[i].item, val, 31)) {
-			return true;
-		}
-		i = (i + 1 >= kc_strset_cap(set)) ? 0 : (i + 1);
+		if (!strncmp(set.data[i].item, val, 31)) return (int)i;
+		if (++i >= kc_strset_cap(set)) i = 0;
 	}
-	return false;
+	return -1;
+}
+
+bool kc_strset_has(kc_strset set, const char* val) {
+	int i = kc_strset_getIndex(set, val);
+	return i >= 0;
 }
 
 static void _strset_item(kc_strset set, const char* val, bool isNew) {

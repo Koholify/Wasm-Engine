@@ -26,8 +26,6 @@
 struct kc_array_header {
 	size_t capacity;
 	size_t length;
-	size_t (*hash)(size_t);
-	size_t (*str_hash)(const char*);
 	bool* is_used;
 };
 
