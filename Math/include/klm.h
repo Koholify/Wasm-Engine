@@ -178,4 +178,21 @@ klm_vec4i	klm_element_mult_v4i	(klm_vec4i a,	klm_vec4i b);
 
 void klm_print_m4(klm_mat4 m);
 
+#ifndef KLN_IGNORE_TYPEDEFS
+
+typedef klm_vec2 vec2;
+typedef klm_vec2i vec2i;
+typedef klm_vec3 vec3;
+typedef klm_vec3i vec3i;
+typedef klm_vec4 vec4;
+typedef klm_vec4i vec4i;
+
+typedef klm_mat2 mat2;
+typedef klm_mat2i mat2i;
+typedef klm_mat3 mat3;
+typedef klm_mat3i mat3i;
+typedef klm_mat4 mat4;
+typedef klm_mat4i mat4i;
+
+#endif
 #endif /* LINALG_DEF_H */

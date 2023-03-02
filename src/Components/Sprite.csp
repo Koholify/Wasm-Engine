@@ -1,0 +1,3 @@
+Sprite:
+	int id
+	vec4 color

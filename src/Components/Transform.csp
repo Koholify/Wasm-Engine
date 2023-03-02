@@ -1,0 +1,7 @@
+Transform:
+	vec3 pos
+	vec2 size
+	float rotation
+
+Velocity:
+	vec2 value
