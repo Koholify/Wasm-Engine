@@ -58,6 +58,8 @@ bool kc_set_has(kc_set set, size_t val);
 void kc_set_set(kc_set * set, size_t val);
 // Remove element from set
 void kc_set_remove(kc_set set, size_t val);
+// Copy a set to a new object
+kc_set kc_set_copy(kc_set set);
 
 // Get index of element in set (-1 if not found)
 int kc_strset_getIndex(kc_strset set, const char* val);
@@ -67,6 +69,8 @@ bool kc_strset_has(kc_strset set, const char* val);
 void kc_strset_set(kc_strset * set, const char* val);
 // Remove element from set
 void kc_strset_remove(kc_strset set, const char* val);
+// Copy a set to a new object
+kc_strset kc_strset_copy(kc_strset set);
 
 // Create a new set containing all items from a and b
 kc_set kc_set_union(kc_set a, kc_set b);
@@ -74,6 +78,8 @@ kc_set kc_set_union(kc_set a, kc_set b);
 kc_set kc_set_intersect(kc_set a, kc_set b);
 // Create new set containing unique items in a and b
 kc_set kc_set_difference(kc_set a, kc_set b);
+// Return true if 2 sets are equal
+bool kc_set_equals(kc_set a, kc_set b);
 
 // Create a new set containing all items from a and b
 kc_strset kc_strset_union(kc_strset a, kc_strset b);
@@ -81,6 +87,8 @@ kc_strset kc_strset_union(kc_strset a, kc_strset b);
 kc_strset kc_strset_intersect(kc_strset a, kc_strset b);
 // Create new set containing unique items in a and b
 kc_strset kc_strset_difference(kc_strset a, kc_strset b);
+// Return true if 2 sets are equal
+bool kc_strset_equals(kc_strset a, kc_strset b);
 
 typedef struct kc_set_iterator {
 	size_t index;

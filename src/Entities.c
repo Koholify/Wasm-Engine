@@ -27,9 +27,27 @@ void entity_archetype_free(entity_archetype arch) {
 	kc_set_free(arch.components);
 }
 
+bool entity_archetype_equals(entity_archetype a, entity_archetype b) {
+	return kc_set_equals(a.components, b.components);
+}
+
+bool entity_archetype_sub(entity_archetype a, entity_archetype b) {
+	kc_set in = kc_set_intersect(a.components, b.components);
+	bool result = kc_set_equals(in, a.components);
+	kc_set_free(in);
+	return result;
+}
+
+entity_archetype entity_archetype_copy(entity_archetype a){
+	entity_archetype new;
+	new.components = kc_set_copy(a.components);
+	return new;
+}
+
 void print_entity_archetype(entity_archetype arch) {
 	kc_set_iterator it = kc_set_iter(arch.components);
 	size_t val;
 	while (kc_set_next(&it, &val))
-			printf("%lu\n", val);
+			printf("%lu, ", val);
+	printf("\n");
 }

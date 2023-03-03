@@ -165,7 +165,7 @@ static void _set_item(kc_set set, size_t val, bool isNew) {
 }
 
 void kc_set_set(kc_set* set, size_t val) {
-	if (kc_set_len(*set) > kc_set_cap(*set) / 2) {
+	if (kc_set_len(*set) > kc_set_cap(*set) * 0.75f) {
 		set->data = set_expand(*set);
 	}
 	_set_item(*set, val, true);
@@ -184,6 +184,15 @@ void kc_set_remove(kc_set set, size_t val) {
 		size_t start = (i + 1) % cap;
 		set_rehash(set, start);
 	}
+}
+
+kc_set kc_set_copy(kc_set set) {
+	kc_set new = kc_set_init(kc_set_cap(set));
+	kc_set_iterator it = kc_set_iter(set);
+	size_t val;
+	while (kc_set_next(&it, &val))
+		kc_set_set(&new, val);
+	return new;
 }
 
 kc_set kc_set_union(kc_set a, kc_set b) {
@@ -241,6 +250,15 @@ kc_set kc_set_difference(kc_set a, kc_set b) {
 	}
 
 	return diff;
+}
+
+bool kc_set_equals(kc_set a, kc_set b) {
+	if (kc_set_len(a) != kc_set_len(b)) return false;
+	kc_set_iterator it = kc_set_iter(a);
+	size_t val;
+	while (kc_set_next(&it, &val))
+		if (!kc_set_has(b, val)) return false;
+	return true;
 }
 
 kc_set_iterator kc_set_iter(kc_set a) {
@@ -323,6 +341,15 @@ void kc_strset_remove(kc_strset set, const char* val) {
 	}
 }
 
+kc_strset kc_strset_copy(kc_strset set) {
+	kc_strset new = kc_strset_init(kc_strset_cap(set));
+	kc_strset_iterator it = kc_strset_iter(set);
+	const char* val;
+	while (kc_strset_next(&it, &val))
+		kc_strset_set(&new, val);
+	return new;
+}
+
 kc_strset kc_strset_union(kc_strset a, kc_strset b) {
 	size_t newCap = kc_strset_cap(a) < kc_strset_cap(b) ? kc_strset_cap(b) : kc_strset_cap(a);
 	kc_strset un = kc_strset_init(newCap);
@@ -379,6 +406,15 @@ kc_strset kc_strset_difference(kc_strset a, kc_strset b) {
 	}
 
 	return diff;
+}
+
+bool kc_strset_equals(kc_strset a, kc_strset b) {
+	if (kc_strset_len(a) != kc_strset_len(b)) return false;
+	kc_strset_iterator it = kc_strset_iter(a);
+	const char* val;
+	while (kc_strset_next(&it, &val))
+		if (!kc_strset_has(b, val)) return false;
+	return true;
 }
 
 kc_strset_iterator kc_strset_iter(kc_strset a) {

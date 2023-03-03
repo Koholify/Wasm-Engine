@@ -10,6 +10,8 @@ typedef struct Sprite {
 	vec4 color;
 } Sprite;
 #define GET_COMPONENT_VALUE_Sprite COMPONENT_SPRITE
+#define GET_COMPONENT_SIZE_COMPONENT_1 sizeof(Sprite)
+#define GET_COMPONENT_SIZE_COMPONENT_COMPONENT_SPRITE sizeof(Sprite)
 
 typedef struct Transform {
 	vec3 pos;
@@ -17,11 +19,15 @@ typedef struct Transform {
 	float rotation;
 } Transform;
 #define GET_COMPONENT_VALUE_Transform COMPONENT_TRANSFORM
+#define GET_COMPONENT_SIZE_COMPONENT_2 sizeof(Transform)
+#define GET_COMPONENT_SIZE_COMPONENT_COMPONENT_TRANSFORM sizeof(Transform)
 
 typedef struct Velocity {
 	vec2 value;
 } Velocity;
 #define GET_COMPONENT_VALUE_Velocity COMPONENT_VELOCITY
+#define GET_COMPONENT_SIZE_COMPONENT_3 sizeof(Velocity)
+#define GET_COMPONENT_SIZE_COMPONENT_COMPONENT_VELOCITY sizeof(Velocity)
 
 // Master list of components.
 enum COMPONENT_ENUM {
@@ -32,6 +38,9 @@ enum COMPONENT_ENUM {
 };
 typedef enum COMPONENT_ENUM COMPONENT_ENUM;
 
+#define GET_COMPONENT_SIZE_COMPONENT_0 0
+#define GET_COMPONENT_SIZE_COMPONENT_COMPONENT_NONE 0
 #define cp_type(comp) ((size_t)GET_COMPONENT_VALUE_##comp)
+#define cp_size(enm) GET_COMPONENT_SIZE_COMPONENT_##enm
 
 #endif // _KGE_COMPONENTS_H
