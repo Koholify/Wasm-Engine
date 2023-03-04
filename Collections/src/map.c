@@ -164,10 +164,19 @@ void kc_map_remove(kc_map map, size_t val) {
 kc_map kc_map_copy(kc_map map) {
 	kc_map new = kc_map_init(kc_map_cap(map));
 	kc_map_iterator it = kc_map_iter(map);
-	kc_map_item val;
+	kc_map_item* val;
 	while (kc_map_next(&it, &val))
-		kc_map_set(&new, val.key, val.value);
+		kc_map_set(&new, val->key, val->value);
 	return new;
+}
+
+void* kc_map_get(kc_map map, size_t val) {
+	size_t i = _map_get_hash(map, val) % kc_map_cap(map);
+	while (map.data[i].is_used) {
+		if (map.data[i].key == val) return map.data[i].value;
+		if (++i >= kc_map_cap(map)) i = 0;
+	}
+	return NULL;
 }
 
 bool kc_strmap_has(kc_strmap map, const char* val) {
@@ -232,10 +241,19 @@ void kc_strmap_remove(kc_strmap map, const char* val) {
 kc_strmap kc_strmap_copy(kc_strmap map) {
 	kc_strmap new = kc_strmap_init(kc_strmap_cap(map));
 	kc_strmap_iterator it = kc_strmap_iter(map);
-	kc_strmap_item val;
+	kc_strmap_item* val;
 	while (kc_strmap_next(&it, &val))
-		kc_strmap_set(&new, val.key, val.value);
+		kc_strmap_set(&new, val->key, val->value);
 	return new;
+}
+
+void* kc_strmap_get(kc_strmap map, const char* val) {
+	size_t i = _strmap_get_hash(map, val) % kc_strmap_cap(map);
+	while (map.data[i].is_used) {
+		if (map.data[i].key == val) return map.data[i].value;
+		if (++i >= kc_strmap_cap(map)) i = 0;
+	}
+	return NULL;
 }
 
 kc_map_iterator kc_map_iter(kc_map a) {
@@ -244,20 +262,21 @@ kc_map_iterator kc_map_iter(kc_map a) {
 	it.map = a;
 	return it;
 }
-bool kc_map_next(kc_map_iterator* it, kc_map_item* next) {
+
+bool kc_map_next(kc_map_iterator* it, kc_map_item** next) {
 	while (!(it->index > kc_map_cap(it->map)) && !it->map.data[it->index].is_used) {
 		it->index++;
 	}
 
 	if (it->index < kc_map_cap(it->map)) {
-		*next = it->map.data[it->index++];
+		*next = &(it->map.data[it->index++]);
 		return true;
 	}
 	return false;
 }
 
-void kc_map_foreach(kc_map map, void* data, void (*fn)(kc_map_item, void*)) {
-	kc_map_item val;
+void kc_map_foreach(kc_map map, void* data, void (*fn)(kc_map_item*, void*)) {
+	kc_map_item* val;
 	kc_map_iterator it = kc_map_iter(map);
 	while (kc_map_next(&it, &val))
 		fn(val, data);
@@ -270,21 +289,21 @@ kc_strmap_iterator kc_strmap_iter(kc_strmap a) {
 	return it;
 }
 
-bool kc_strmap_next(kc_strmap_iterator* it, kc_strmap_item* next) {
+bool kc_strmap_next(kc_strmap_iterator* it, kc_strmap_item** next) {
 	while (it->index < kc_strmap_cap(it->map) && !it->map.data[it->index].is_used) {
 		it->index++;
 	}
 
 	if (it->index < kc_strmap_cap(it->map)) {
-		*next = it->map.data[it->index++];
+		*next = &(it->map.data[it->index++]);
 		return true;
 	}
 
 	return false;
 }
 
-void kc_strmap_foreach(kc_strmap map, void* data, void (*fn)(kc_strmap_item, void*)) {
-	kc_strmap_item val;
+void kc_strmap_foreach(kc_strmap map, void* data, void (*fn)(kc_strmap_item*, void*)) {
+	kc_strmap_item* val;
 	kc_strmap_iterator it = kc_strmap_iter(map);
 	while (kc_strmap_next(&it, &val))
 		fn(val, data);

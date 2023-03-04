@@ -9,7 +9,7 @@
 
 struct _entity_store {
 	entity_archetype type;
-	kc_set entity_list;
+	kc_map entity_list;
 	char** data;
 };
 
@@ -22,12 +22,15 @@ struct entity_manager* entity_manager_create();
 void entity_manager_free(struct entity_manager* manager);
 
 entity_entity entity_manager_add_entity(struct entity_manager* manager, entity_archetype arch);
-void entity_manager_destroy(entity_entity e);
+void entity_manager_destroy(struct entity_manager* manager, entity_entity e);
 
 struct _entity_store _entity_store_create(entity_archetype arch);
 void _entity_store_free(struct _entity_store* store);
 
 void _entity_store_add_entity(
+		struct _entity_store* store,
+		entity_entity entity);
+void _entity_store_remove_entity(
 		struct _entity_store* store,
 		entity_entity entity);
 
