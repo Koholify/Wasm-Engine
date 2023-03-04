@@ -4,6 +4,7 @@ TemplateHeader = [[
 #ifndef _KGE_COMPONENTS_H
 #define _KGE_COMPONENTS_H
 
+#include <stddef.h>
 #include "klm.h"
 
 ]]
@@ -12,7 +13,6 @@ TemplateStruct = [[
 typedef struct $NAME$ {
 $MEMBER_VALUES$} $NAME$;
 #define GET_COMPONENT_VALUE_$NAME$ COMPONENT_$UPPERNAME$
-#define GET_COMPONENT_SIZE_COMPONENT_$INDEX$ sizeof($NAME$)
 #define GET_COMPONENT_SIZE_COMPONENT_COMPONENT_$UPPERNAME$ sizeof($NAME$)
 
 ]]
@@ -30,12 +30,29 @@ typedef enum COMPONENT_ENUM COMPONENT_ENUM;
 #define GET_COMPONENT_SIZE_COMPONENT_0 0
 #define GET_COMPONENT_SIZE_COMPONENT_COMPONENT_NONE 0
 #define cp_type(comp) ((size_t)GET_COMPONENT_VALUE_##comp)
-#define cp_size(enm) GET_COMPONENT_SIZE_COMPONENT_##enm
+#define _cp_size(enm) GET_COMPONENT_SIZE_COMPONENT_##enm
+
+size_t cp_size(COMPONENT_ENUM type);
 
 #endif // _KGE_COMPONENTS_H
 ]]
 
-local function readSourceFile(targetFile, sourceFile)
+TemplateSource = [[
+// This is a generated file, do not edit manually
+#include "Components.h"
+#include <stddef.h>
+
+size_t cp_size(COMPONENT_ENUM type) {
+	switch (type) {
+]]
+
+TemplateSourceEnd = [[
+		default: return 0;
+	}
+}
+]]
+
+local function readSourceFile(targetFile, targetFile2, sourceFile)
 	local source = io.open(sourceFile, 'r')
 	local line = source:read'l'
 	while line do
@@ -52,8 +69,9 @@ local function readSourceFile(targetFile, sourceFile)
 			local struct = TemplateStruct:gsub("%$NAME%$", name)
 			struct = struct:gsub("%$UPPERNAME%$", name:upper())
 			struct = struct:gsub("%$MEMBER_VALUES%$", members)
-			struct = struct:gsub("%$INDEX%$", #CList)
+			--struct = struct:gsub("%$INDEX%$", #CList)
 			targetFile:write(struct)
+			targetFile2:write("\t\tcase COMPONENT_" .. name:upper() .. ": return sizeof(" .. name .. ");\n")
 		else
 			line = source:read"l"
 		end
@@ -63,12 +81,14 @@ end
 
 CList = {}
 local targetFile = io.open("src/Components.h", "w+")
+local targetFile2 = io.open("src/Components.c", "w+")
 targetFile:write(TemplateHeader)
+targetFile2:write(TemplateSource)
 
 local fileList = io.popen("ls src/Components | grep .csp$", "r")
 for f in fileList:lines"l" do
 	print(f)
-	readSourceFile(targetFile, "src/Components/" .. f)
+	readSourceFile(targetFile, targetFile2, "src/Components/" .. f)
 end
 fileList:close()
 
@@ -78,6 +98,8 @@ for i=1, #CList do
 	targetFile:write("\tCOMPONENT_" .. CList[i] .. ",\n")
 end
 
+targetFile2:write(TemplateSourceEnd)
 targetFile:write(TemplateFooter)
 targetFile:close()
+targetFile2:close()
 

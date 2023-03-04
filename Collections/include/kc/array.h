@@ -26,7 +26,6 @@
 struct kc_array_header {
 	size_t capacity;
 	size_t length;
-	bool* is_used;
 };
 
 void * kc_arr_grow(void * a, size_t size, size_t cap);

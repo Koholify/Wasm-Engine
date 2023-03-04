@@ -5,6 +5,8 @@
 #include <stdbool.h>
 #include "kc/array.h"
 
+#define STR_HASH_LENGTH 31UL
+
 typedef size_t(*int_hash)(size_t);
 typedef size_t(*str_hash)(const char*);
 
@@ -25,6 +27,9 @@ typedef struct kc_set {
 typedef struct kc_strset {
 	kc_strset_item * data;
 } kc_strset;
+
+size_t kc_int_hash(size_t x);
+size_t kc_str_hash(const char* in);
 
 // Initialize set of unsigned int (len: Capacity)
 kc_set kc_set_init(size_t len);
@@ -99,6 +104,7 @@ typedef struct kc_set_iterator {
 kc_set_iterator kc_set_iter(kc_set a);
 // Returns true if value is set in next. False if complete.
 bool kc_set_next(kc_set_iterator* it, size_t* next);
+void kc_set_foreach(kc_set set, void* data, void (*fn)(size_t, void*));
 
 typedef struct kc_strset_iterator {
 	size_t index;
@@ -109,5 +115,6 @@ typedef struct kc_strset_iterator {
 kc_strset_iterator kc_strset_iter(kc_strset a);
 // Returns true if value is set in next. False if complete.
 bool kc_strset_next(kc_strset_iterator* it, const char** next);
+void kc_strset_foreach(kc_strset set, void* data, void (*fn)(const char*, void*));
 
 #endif

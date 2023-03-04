@@ -5,8 +5,6 @@
 #include "kc/array.h"
 #include "kc/set.h"
 
-#define STR_HASH_LENGTH 31UL
-
 #define FNV_OFFSET 14695981039346656037UL
 #define FNV_PRIME 1099511628211UL
 
@@ -63,14 +61,14 @@ static void strset_rehash(kc_strset set, size_t start) {
 	}
 }
 
-static size_t kc_int_hash(size_t x) {
+size_t kc_int_hash(size_t x) {
     x = (x ^ (x >> 30)) * 0xbf58476d1ce4e5b9;
     x = (x ^ (x >> 27)) * 0x94d049bb133111eb;
     x = x ^ (x >> 31);
     return x;
 }
 
-static size_t kc_str_hash(const char* in) {
+size_t kc_str_hash(const char* in) {
 	size_t hash = FNV_OFFSET;
 	size_t len = strlen(in);
 	for (size_t i = 0; i < len; i++) {
@@ -279,6 +277,14 @@ bool kc_set_next(kc_set_iterator* it, size_t* next) {
 	return false;
 }
 
+void kc_set_foreach(kc_set set, void* data, void (*fn)(size_t, void*)) {
+	size_t val;
+	kc_set_iterator it = kc_set_iter(set);
+	while (kc_set_next(&it, &val))
+		fn(val, data);
+}
+
+
 int kc_strset_getIndex(kc_strset set, const char* val) {
 	size_t i = _strset_get_hash(set, val) % kc_strset_cap(set);
 	while (set.data[i].is_used) {
@@ -320,7 +326,7 @@ static void _strset_item(kc_strset set, const char* val, bool isNew) {
 }
 
 void kc_strset_set(kc_strset * set, const char* val) {
-	if (kc_strset_len(*set) > kc_strset_cap(*set) / 2) {
+	if (kc_strset_len(*set) > kc_strset_cap(*set) * 0.75f) {
 		set->data = strset_expand(*set);
 	}
 	_strset_item(*set, val, true);
@@ -435,4 +441,11 @@ bool kc_strset_next(kc_strset_iterator* it, const char** next) {
 	}
 
 	return false;
+}
+
+void kc_strset_foreach(kc_strset set, void* data, void (*fn)(const char*, void*)) {
+	const char* val;
+	kc_strset_iterator it = kc_strset_iter(set);
+	while (kc_strset_next(&it, &val))
+		fn(val, data);
 }
