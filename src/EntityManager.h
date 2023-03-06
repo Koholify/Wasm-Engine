@@ -4,13 +4,13 @@
 #include "Components.h"
 #include "Entities.h"
 #include "kc/map.h"
+#include "kc/byte_array.h"
 #include <stddef.h>
-#include <stdint.h>
 
 struct _entity_store {
 	entity_archetype type;
 	kc_map entity_list;
-	char** data;
+	kc_byte_array** data;
 };
 
 struct entity_manager {
@@ -34,7 +34,7 @@ void _entity_store_remove_entity(
 		struct _entity_store* store,
 		entity_entity entity);
 
-void* _entity_store_get_component(
+const void* _entity_store_get_component(
 		struct _entity_store* store,
 		entity_entity entity,
 		COMPONENT_ENUM component);

@@ -5,6 +5,7 @@
 #include "Entities.h"
 #include "EntityManager.h"
 #include "kc/array.h"
+#include "kc/byte_array.h"
 #include "kc/map.h"
 #include "kc/set.h"
 
@@ -12,7 +13,7 @@ struct entity_manager* entity_manager_create() {
 	struct entity_manager* manager = malloc(sizeof(struct entity_manager));
 	manager->entity_list = kc_map_init(32);
 	manager->data_store = NULL;
-	kc_arr_init(manager->data_store);
+	kc_arr_setcap(manager->data_store, 8);
 	return manager;
 }
 
@@ -73,7 +74,7 @@ struct _entity_store _entity_store_create(entity_archetype arch) {
 	
 	for (size_t i = 0; i < kc_arr_len(new.data); i++) {
 		kc_set_next(&it, &val);
-		kc_arr_setcap(new.data[i], 16 * cp_size(val));
+		new.data[i] = kc_bytes_create(16, cp_size(val));
 	}
 	return new;
 }
@@ -82,14 +83,8 @@ void _entity_store_add_entity(struct _entity_store* store, entity_entity entity)
 	size_t ind = kc_map_len(store->entity_list);
 	kc_map_set(&store->entity_list, entity.index, (void*)ind);
 
-	size_t val;
-	kc_set_iterator it = kc_set_iter(store->type.components);
-	
 	for (size_t i = 0; i < kc_arr_len(store->data); i++) {
-		kc_set_next(&it, &val);
-		size_t ol = kc_arr_len(store->data[i]);
-		kc_arr_setlen(store->data[i], ol + cp_size(val));
-		memset(&(store->data[i][ind]), 0, cp_size(val));
+		kc_bytes_add(store->data[i], NULL);
 	}
 }
 
@@ -102,16 +97,8 @@ void _entity_store_remove_entity(struct _entity_store* store, entity_entity enti
 	void* ind = kc_map_get(store->entity_list, entity.index);
 	kc_map_foreach(store->entity_list, ind, remove_store_lambda);
 
-	size_t val;
-	kc_set_iterator it = kc_set_iter(store->type.components);
-	
 	for (size_t i = 0; i < kc_arr_len(store->data); i++) {
-		kc_set_next(&it, &val);
-		size_t size = cp_size(val);
-		size_t index = (size_t)ind * size;
-		memmove(&(store->data[i][index]), &(store->data[i][index + size]), (kc_arr_len(store->data[i]) - index));
-		struct kc_array_header* h = kc_arr_header(store->data[i]);
-		h->length = h->length - size;
+		kc_bytes_removeAt(store->data[i], (size_t)ind);
 	}
 }
 
@@ -119,11 +106,11 @@ void _entity_store_free(struct _entity_store *store) {
 	entity_archetype_free(store->type);
 	kc_map_free(store->entity_list);
 	for (size_t i = 0; i < kc_arr_len(store->data); i++)
-		kc_arr_free(store->data[i]);
+		kc_bytes_free(store->data[i]);
 	kc_arr_free(store->data);
 }
 
-void* _entity_store_get_component(
+const void* _entity_store_get_component(
 		struct _entity_store* store,
 		entity_entity entity,
 		COMPONENT_ENUM component) {
@@ -136,6 +123,6 @@ void* _entity_store_get_component(
 	}
 
 	size_t index = (size_t)kc_map_get(store->entity_list, entity.index);
-	return store->data[i] + (index * cp_size(component));
+	return kc_bytes_get(store->data[i], index);
 }
 
