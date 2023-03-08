@@ -54,6 +54,49 @@ void entity_manager_destroy(struct entity_manager* manager, entity_entity e) {
 	kc_map_remove(manager->entity_list, e.index);
 }
 
+static void all_job1(kc_map_item* i, void* l) {
+	entity_entity** r = (entity_entity**)l;
+	entity_entity* all = *r;
+	entity_entity v = { .index = (size_t)(i->key) };
+	kc_arr_push(all, v);
+	*r = all;
+}
+entity_entity* entity_manager_all_entities(struct entity_manager* manager) {
+	entity_entity* all = NULL;
+	kc_arr_setcap(all, kc_map_len(manager->entity_list) + 1);
+	kc_map_foreach(manager->entity_list, &all, all_job1);
+	return  all;
+}
+
+entity_entity* entity_manager_query_entities(struct entity_manager* manager, entity_archetype arch) {
+	entity_entity* all = NULL;
+	kc_arr_setcap(all, 1);
+	for(size_t i = 0; i < kc_arr_len(manager->data_store); i++) {
+		if (entity_archetype_sub(arch, manager->data_store[i].type)) {
+			struct _entity_store store = manager->data_store[i];
+			kc_arr_setcap(all, kc_arr_cap(all) + kc_map_len(store.entity_list));
+			kc_map_foreach(store.entity_list, &all, all_job1);
+		}
+	}
+	return  all;
+}
+
+extern inline void _entity_manager_get_component_and_copy(struct entity_manager* manager, entity_entity entity, COMPONENT_ENUM cp, void* target); 
+
+const void* _entity_manager_get_component(struct entity_manager* manager, entity_entity entity, COMPONENT_ENUM cp) {
+	struct _entity_store* store = kc_map_get(manager->entity_list, entity.index);
+	return _entity_store_get_component(store, entity, cp);
+}
+
+void entity_manager_set_component(
+		struct entity_manager* manager,
+		entity_entity entity,
+		COMPONENT_ENUM type,
+		const void* component) {
+	struct _entity_store* store = kc_map_get(manager->entity_list, entity.index);
+	_entity_store_set_component(store, entity, type, component);
+}
+
 /********************************************************************
  *
  * Entity Store
@@ -110,19 +153,34 @@ void _entity_store_free(struct _entity_store *store) {
 	kc_arr_free(store->data);
 }
 
-const void* _entity_store_get_component(
-		struct _entity_store* store,
-		entity_entity entity,
-		COMPONENT_ENUM component) {
-	if (!kc_set_has(store->type.components, component)) return NULL;
+static struct kc_byte_array* _store_get_array(struct _entity_store* store, COMPONENT_ENUM component) {
 	kc_set_iterator it = kc_set_iter(store->type.components);
 	size_t val = 0, i = 0;
 	while (kc_set_next(&it, &val)) {
 		if (val == component) break;
 		i++;
 	}
+	return store->data[i];
+}
+
+const void* _entity_store_get_component(
+		struct _entity_store* store,
+		entity_entity entity,
+		COMPONENT_ENUM component) {
+	if (!kc_set_has(store->type.components, component)) return NULL;
+	kc_byte_array* data = _store_get_array(store, component);
 
 	size_t index = (size_t)kc_map_get(store->entity_list, entity.index);
-	return kc_bytes_get(store->data[i], index);
+	return kc_bytes_get(data, index);
+}
+
+void _entity_store_set_component(
+		struct _entity_store* store,
+		entity_entity entity,
+		COMPONENT_ENUM type,
+		const void* component) {
+	kc_byte_array* data = _store_get_array(store, type);
+	size_t index = (size_t)kc_map_get(store->entity_list, entity.index);
+	kc_bytes_set(data, index, component);
 }
 
