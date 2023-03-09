@@ -32,10 +32,7 @@ bool entity_archetype_equals(entity_archetype a, entity_archetype b) {
 }
 
 bool entity_archetype_sub(entity_archetype a, entity_archetype b) {
-	kc_set in = kc_set_intersect(a.components, b.components);
-	bool result = kc_set_equals(in, a.components);
-	kc_set_free(in);
-	return result;
+	return kc_set_sub(a.components, b.components);
 }
 
 entity_archetype entity_archetype_copy(entity_archetype a){

@@ -27,7 +27,7 @@ static size_t get_next_entity_id() {
 	return id++;
 }
 
-entity_entity entity_manager_add_entity(struct entity_manager* manager, entity_archetype arch) {
+static struct _entity_store* entity_manager_find_store(struct entity_manager* manager, entity_archetype arch) {
 	struct _entity_store* store = NULL;
 	for (size_t i = 0; i < kc_arr_len(manager->data_store); i++) {
 		if (entity_archetype_equals(manager->data_store[i].type, arch)) {
@@ -35,6 +35,12 @@ entity_entity entity_manager_add_entity(struct entity_manager* manager, entity_a
 			break;
 		}
 	}
+
+	return store;
+}
+
+entity_entity entity_manager_add_entity(struct entity_manager* manager, entity_archetype arch) {
+	struct _entity_store* store = entity_manager_find_store(manager, arch);
 
 	if (!store) {
 		struct _entity_store new_store = _entity_store_create(arch);

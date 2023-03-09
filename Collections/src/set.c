@@ -259,6 +259,13 @@ bool kc_set_equals(kc_set a, kc_set b) {
 	return true;
 }
 
+bool kc_set_sub(kc_set a, kc_set b) {
+	kc_set inter = kc_set_intersect(a, b);
+	bool sub = kc_set_equals(inter, a);
+	kc_set_free(inter);
+	return sub;
+}
+
 kc_set_iterator kc_set_iter(kc_set a) {
 	kc_set_iterator it;
 	it.index = 0;
@@ -421,6 +428,13 @@ bool kc_strset_equals(kc_strset a, kc_strset b) {
 	while (kc_strset_next(&it, &val))
 		if (!kc_strset_has(b, val)) return false;
 	return true;
+}
+
+bool kc_strset_sub(kc_strset a, kc_strset b) {
+	kc_strset inter = kc_strset_intersect(a, b);
+	bool sub = kc_strset_equals(inter, a);
+	kc_strset_free(inter);
+	return sub;
 }
 
 kc_strset_iterator kc_strset_iter(kc_strset a) {

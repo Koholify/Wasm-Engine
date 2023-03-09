@@ -17,7 +17,7 @@ typedef struct kc_set_item {
 
 typedef struct kc_strset_item {
 	bool is_used;
-	char item[32];
+	char item[STR_HASH_LENGTH + 1];
 } kc_strset_item;
 
 typedef struct kc_set {
@@ -85,6 +85,8 @@ kc_set kc_set_intersect(kc_set a, kc_set b);
 kc_set kc_set_difference(kc_set a, kc_set b);
 // Return true if 2 sets are equal
 bool kc_set_equals(kc_set a, kc_set b);
+// Return true if 'a' is a subset of 'b'
+bool kc_set_sub(kc_set a, kc_set b);
 
 // Create a new set containing all items from a and b
 kc_strset kc_strset_union(kc_strset a, kc_strset b);
@@ -94,6 +96,8 @@ kc_strset kc_strset_intersect(kc_strset a, kc_strset b);
 kc_strset kc_strset_difference(kc_strset a, kc_strset b);
 // Return true if 2 sets are equal
 bool kc_strset_equals(kc_strset a, kc_strset b);
+// Return true if 'a' is a subset of 'b'
+bool kc_strset_sub(kc_strset a, kc_strset b);
 
 typedef struct kc_set_iterator {
 	size_t index;
