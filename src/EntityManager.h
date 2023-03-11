@@ -44,6 +44,16 @@ inline void _entity_manager_get_component_and_copy(struct entity_manager* manage
 	const void* c = _entity_manager_get_component(manager, entity, cp);
 	memcpy(target, c, cp_size(cp));
 }
+
+// Add a component to an entity.
+void _entity_manager_add_component(struct entity_manager* manager, entity_entity entity, COMPONENT_ENUM cp);
+// Add a component to an entity.
+#define entity_manager_add_component(manager, entity, cp) _entity_manager_add_component(manager, entity, cp_type(cp))
+// Remove a component from an entity.
+void _entity_manager_remove_component(struct entity_manager* manager, entity_entity entity, COMPONENT_ENUM cp);
+// Remove a component from an entity.
+#define entity_manager_remove_component(manager, entity, cp) _entity_manager_remove_component(manager, entity, cp_type(cp))
+
 // Get a copy of the component.
 #define entity_manager_get_component(manager, entity, t, cp) _entity_manager_get_component_and_copy(manager, entity, cp_type(cp), t)
 // Get a const * to the component.

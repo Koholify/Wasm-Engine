@@ -103,6 +103,12 @@ void entity_manager_set_component(
 	_entity_store_set_component(store, entity, type, component);
 }
 
+// TODO Add/Remove components
+
+void _entity_manager_add_component(struct entity_manager* manager, entity_entity entity, COMPONENT_ENUM cp);
+
+void _entity_manager_remove_component(struct entity_manager* manager, entity_entity entity, COMPONENT_ENUM cp);
+
 /********************************************************************
  *
  * Entity Store
