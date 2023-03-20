@@ -11,7 +11,7 @@ add_subdirectory(Math)
 add_subdirectory(Collections)
 
 file(GLOB SOURCES src/*.c)
-add_executable(KGE ${SOURCES})
+add_library(KGE ${SOURCES})
 
 target_link_libraries(KGE klm)
 target_link_libraries(KGE kc)
