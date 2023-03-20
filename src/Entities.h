@@ -30,6 +30,12 @@ entity_archetype _entity_archetype_create(COMPONENT_ENUM comp, ...);
 // Deallocate memory used by archetype.
 void entity_archetype_free(entity_archetype arch);
 
+// Add a type to an archetype.
+void entity_archetype_add_type(entity_archetype* arch, COMPONENT_ENUM cp);
+
+// Remove a type from an archetype.
+void entity_archetype_remove_type(entity_archetype* arch, COMPONENT_ENUM cp);
+
 // Returns true if the two archetypes hold the same components.
 bool entity_archetype_equals(entity_archetype a, entity_archetype b);
 

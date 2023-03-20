@@ -23,6 +23,14 @@ entity_archetype _entity_archetype_create(COMPONENT_ENUM comp, ...) {
 	return arch;
 }
 
+void entity_archetype_add_type(entity_archetype* arch, COMPONENT_ENUM cp) {
+	kc_set_set(&arch->components, cp);
+}
+
+void entity_archetype_remove_type(entity_archetype* arch, COMPONENT_ENUM cp) {
+	kc_set_remove(arch->components, cp);
+}
+
 void entity_archetype_free(entity_archetype arch) {
 	kc_set_free(arch.components);
 }

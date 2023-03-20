@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <stdlib.h>
 #include <stddef.h>
 #include <string.h>
@@ -27,6 +28,12 @@ static size_t get_next_entity_id() {
 	return id++;
 }
 
+static struct _entity_store* entity_manager_create_store(struct entity_manager* manager, entity_archetype arch) {
+		struct _entity_store new_store = _entity_store_create(arch);
+		kc_arr_push(manager->data_store, new_store);
+		return manager->data_store + (kc_arr_len(manager->data_store) - 1);
+}	
+
 static struct _entity_store* entity_manager_find_store(struct entity_manager* manager, entity_archetype arch) {
 	struct _entity_store* store = NULL;
 	for (size_t i = 0; i < kc_arr_len(manager->data_store); i++) {
@@ -39,15 +46,16 @@ static struct _entity_store* entity_manager_find_store(struct entity_manager* ma
 	return store;
 }
 
-entity_entity entity_manager_add_entity(struct entity_manager* manager, entity_archetype arch) {
+static struct _entity_store* get_or_create_store(struct entity_manager* manager, entity_archetype arch) {
 	struct _entity_store* store = entity_manager_find_store(manager, arch);
-
 	if (!store) {
-		struct _entity_store new_store = _entity_store_create(arch);
-		kc_arr_push(manager->data_store, new_store);
-		store = manager->data_store + (kc_arr_len(manager->data_store) - 1);
+		store = entity_manager_create_store(manager, arch);
 	}
+	return store;
+}
 
+entity_entity entity_manager_add_entity(struct entity_manager* manager, entity_archetype arch) {
+	struct _entity_store* store = get_or_create_store(manager, arch);
 	struct entity_entity entity = { .index = get_next_entity_id() };
 	_entity_store_add_entity(store, entity);
 	kc_map_set(&manager->entity_list, entity.index, (void*)store);
@@ -103,11 +111,51 @@ void entity_manager_set_component(
 	_entity_store_set_component(store, entity, type, component);
 }
 
-// TODO Add/Remove components
+bool _entity_manager_has_component(struct entity_manager* manager, entity_entity entity, COMPONENT_ENUM cp) {
+	assert(kc_map_has(manager->entity_list, entity.index));
+	struct _entity_store* store = kc_map_get(manager->entity_list, entity.index);
+	return _entity_archetype_has(store->type, cp);
+}
 
-void _entity_manager_add_component(struct entity_manager* manager, entity_entity entity, COMPONENT_ENUM cp);
+static void copy_entity_data(struct _entity_store* a, struct _entity_store* b, entity_entity entity, entity_archetype arch) {
+	kc_set_iterator it = kc_set_iter(arch.components);
+	size_t val;
+	while(kc_set_next(&it, &val)) {
+		const void* cp = _entity_store_get_component(b, entity, val);
+		_entity_store_set_component(a, entity, val, cp);
+	}
+}
+void _entity_manager_add_component(struct entity_manager* manager, entity_entity entity, COMPONENT_ENUM cp) {
+	if (_entity_manager_has_component(manager, entity, cp))
+			return;
 
-void _entity_manager_remove_component(struct entity_manager* manager, entity_entity entity, COMPONENT_ENUM cp);
+	struct _entity_store* current_store = kc_map_get(manager->entity_list, entity.index);
+	entity_archetype arch = entity_archetype_copy(current_store->type);
+	entity_archetype_add_type(&arch, cp);
+
+	struct _entity_store* new_store = get_or_create_store(manager, arch);
+	_entity_store_add_entity(new_store, entity);
+	copy_entity_data(new_store, current_store, entity, current_store->type);
+	_entity_store_remove_entity(current_store, entity);
+	kc_map_set(&manager->entity_list, entity.index, new_store);
+	entity_archetype_free(arch);
+}
+
+void _entity_manager_remove_component(struct entity_manager* manager, entity_entity entity, COMPONENT_ENUM cp) {
+	if (!_entity_manager_has_component(manager, entity, cp))
+			return;
+
+	struct _entity_store* current_store = kc_map_get(manager->entity_list, entity.index);
+	entity_archetype arch = entity_archetype_copy(current_store->type);
+	entity_archetype_remove_type(&arch, cp);
+
+	struct _entity_store* new_store = get_or_create_store(manager, arch);
+	_entity_store_add_entity(new_store, entity);
+	copy_entity_data(new_store, current_store, entity, current_store->type);
+	_entity_store_remove_entity(current_store, entity);
+	kc_map_set(&manager->entity_list, entity.index, new_store);
+	entity_archetype_free(arch);
+}
 
 /********************************************************************
  *
@@ -155,6 +203,7 @@ void _entity_store_remove_entity(struct _entity_store* store, entity_entity enti
 	for (size_t i = 0; i < kc_arr_len(store->data); i++) {
 		kc_bytes_removeAt(store->data[i], (size_t)ind);
 	}
+	kc_map_remove(store->entity_list, entity.index);
 }
 
 void _entity_store_free(struct _entity_store *store) {

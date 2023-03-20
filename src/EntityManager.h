@@ -45,6 +45,11 @@ inline void _entity_manager_get_component_and_copy(struct entity_manager* manage
 	memcpy(target, c, cp_size(cp));
 }
 
+// If a component is on an entity.
+bool _entity_manager_has_component(struct entity_manager* manager, entity_entity entity, COMPONENT_ENUM cp);
+// If a component is on an entity.
+#define entity_manager_has_component(manager, entity, cp) _entity_manager_add_component(manager, entity, cp_type(cp))
+
 // Add a component to an entity.
 void _entity_manager_add_component(struct entity_manager* manager, entity_entity entity, COMPONENT_ENUM cp);
 // Add a component to an entity.

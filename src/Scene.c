@@ -11,6 +11,8 @@
 #if TARGET == TERMINAL
 #include <unistd.h>
 #include <ctype.h>
+#include <time.h>
+#include <stdlib.h>
 #endif
 
 kge_scene kge_scene_create(scene_update update) {
@@ -35,6 +37,15 @@ void kge_scene_free(kge_scene scene) {
  **********************************************************************/
 
 #if TARGET == TERMINAL
+static entity_entity random_entity(struct entity_manager* manager) {
+	entity_entity* all = entity_manager_all_entities(manager);
+	srand(time(NULL));
+	size_t ind = (size_t)rand() % kc_arr_len(all);
+	entity_entity result = all[ind];
+	kc_arr_free(all);
+	return result;
+}
+
 static void terminal_input_system(struct entity_manager* manager) {
 	(void)manager;
 	char c;
@@ -54,6 +65,10 @@ static void terminal_input_system(struct entity_manager* manager) {
 				entity_manager_destroy(manager, all[i]);
 			kc_arr_free(all);
 			printf("Entity count: %lu\n", kc_map_len(manager->entity_list));
+		} else if ( c == 'c') {
+			entity_entity re = random_entity(manager);
+			COMPONENT_ENUM cp = (rand() % 3) + 1;
+			_entity_manager_add_component(manager, re, cp);
 		}
 	}
 }
