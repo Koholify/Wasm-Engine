@@ -7,11 +7,13 @@ static void _set_item(kc_map map, size_t key, void* value, bool isNew);
 static void _strset_item(kc_strmap map, const char* key, void* value, bool isNew);
 
 static size_t _map_get_hash(kc_map t, size_t val) {
-	return kc_map_hash(t)(val);
+	(void)t;
+	return kc_map_hash()(val);
 }
 
 static size_t _strmap_get_hash(kc_strmap t, const char* val) {
-	return kc_strmap_hash(t)(val);
+	(void)t;
+	return kc_strmap_hash()(val);
 }
 
 static kc_map_item* map_expand(kc_map map) {

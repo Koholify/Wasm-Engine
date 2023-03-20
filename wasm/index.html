@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<head>
+	<title>Another test today, yeah?</title>
+</head>
+<body>
+	<p>Some text</p>
+	<canvas width="600", height="400"></canvas>
+	<script src="KGE.js"></script>
+	<script>
+		const update = Module.cwrap("kge_update", 'bool', []);
+		const cleanup = Module.cwrap("kge_cleanup", null, []);
+
+		const frame = function () {
+			console.log('frame');
+			let cont = update();
+			if (cont) { requestAnimationFrame(frame); }
+			else {
+				console.log('ending');
+				cleanup();
+			}
+		}
+
+		Module.onRuntimeInitialized = () => {
+			console.log('starting');
+			requestAnimationFrame(frame);
+		}
+
+	</script>
+</body>

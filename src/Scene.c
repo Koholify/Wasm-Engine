@@ -36,6 +36,11 @@ void kge_scene_free(kge_scene scene) {
  *
  **********************************************************************/
 
+static void dummy_system(struct entity_manager* manager) {
+	(void)manager;
+	printf("The dummy system is running\n");
+}
+
 #if TARGET == TERMINAL
 static entity_entity random_entity(struct entity_manager* manager) {
 	entity_entity* all = entity_manager_all_entities(manager);
@@ -84,6 +89,8 @@ static void scene_play_loop(struct entity_manager* manager) {
 #if TARGET == TERMINAL
 	terminal_input_system(manager);
 #endif
+	dummy_system(manager);
+	printf("finish a loop\n");
 }
 
 kge_scene kge_scene_play_create() {

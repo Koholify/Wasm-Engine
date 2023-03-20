@@ -5,6 +5,7 @@
 #include "tests.h"
 #include "Scene.h"
 #include "Config.h"
+#include "Init.h"
 
 #if TARGET == TERMINAL
 // Raw Mode
@@ -35,6 +36,7 @@ static void enable_raw_mode() {
 #endif
 
 bool RUNNING = true;
+kge_scene ActiveScene;
 
 void kge_init(void) {
 	//run_tests();
@@ -44,10 +46,14 @@ void kge_init(void) {
 #endif
 
 	kge_scene play = kge_scene_play_create();
-	while(RUNNING) {
-		kge_scene_update(play);
-	}
-
-	kge_scene_free(play);
+	ActiveScene = play;
 }
 
+bool kge_update() {
+	kge_scene_update(ActiveScene);
+	return RUNNING;
+}
+
+void kge_cleanup() {
+	kge_scene_free(ActiveScene);
+}

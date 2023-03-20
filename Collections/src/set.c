@@ -12,11 +12,14 @@ static void _set_item(kc_set set, size_t val, bool isNew);
 static void _strset_item(kc_strset set, const char* val, bool isNew);
 
 static size_t _set_get_hash(kc_set t, size_t val) {
-	return kc_set_hash(t)(val);
+	(void)t;
+	int_hash hash = kc_set_hash();
+	return hash(val);
 }
 
 static size_t _strset_get_hash(kc_strset t, const char* val) {
-	return kc_strset_hash(t)(val);
+	(void)t;
+	return kc_strset_hash()(val);
 }
 
 static kc_set_item* set_expand(kc_set set) {
@@ -69,7 +72,7 @@ size_t kc_int_hash(size_t x) {
 }
 
 size_t kc_str_hash(const char* in) {
-	size_t hash = FNV_OFFSET;
+	size_t hash = (size_t)FNV_OFFSET;
 	size_t len = strlen(in);
 	for (size_t i = 0; i < len; i++) {
 		hash = hash ^ in[i];

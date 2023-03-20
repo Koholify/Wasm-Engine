@@ -5,6 +5,6 @@
 #define TERMINAL 2
 #define GLFW 3
 
-#define TARGET TERMINAL
+#define TARGET WASM
 
 #endif

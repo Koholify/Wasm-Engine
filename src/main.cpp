@@ -1,9 +1,12 @@
 #include <iostream>
+#include "Config.h"
 #include "KGE.hpp"
 
-int main(void) {
-#ifdef __cplusplus
-	std::cout << "is cpp\n";
+#if TARGET == WASM
+#include <emscripten.h>
 #endif
+
+int EMSCRIPTEN_KEEPALIVE main(void) {
+	std::cout << "Starting up hehe\n";
 	kge_init();
 }
