@@ -1,5 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
+#include "Components.h"
+#include "Entities.h"
 #include "EntityManager.h"
 #include "kc/array.h"
 #include "tests.h"
@@ -7,7 +9,7 @@
 #include "Config.h"
 #include "Init.h"
 
-#if TARGET == TERMINAL
+#if KGE_TERMINAL
 // Raw Mode
 #include <stdlib.h>
 #include <unistd.h>
@@ -41,12 +43,15 @@ kge_scene ActiveScene;
 void kge_init(void) {
 	//run_tests();
 	
-#if TARGET == TERMINAL
+#if KGE_TERMINAL
 	enable_raw_mode();
 #endif
 
 	kge_scene play = kge_scene_play_create();
 	ActiveScene = play;
+	entity_archetype arch = entity_archetype_create(cp_type(Sprite), cp_type(Transform));
+	entity_manager_add_entity(play.manager, arch);
+	entity_archetype_free(arch);
 }
 
 bool kge_update() {

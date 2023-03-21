@@ -1,15 +1,14 @@
 #include <stddef.h>
 #include <stdio.h>
+#include "tests.h"
 #include "klm.h"
 #include "kc/llist.h"
 #include "kc/array.h"
 #include "kc/set.h"
-#include "tests.h"
 #include "Entities.h"
 #include "EntityManager.h"
 
 static void print_ss(kc_strset s);
-
 
 static int llist_test() {
 	klm_vec3 vec = { 1.0f, 23.0f, 5.0f };

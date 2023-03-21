@@ -3,6 +3,7 @@
 
 extern "C" {
 #include "Init.h"
+#include "Config.h"
 #include "Components.h"
 #include "Entities.h"
 #include "Scene.h"

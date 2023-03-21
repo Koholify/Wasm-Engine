@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.0)
 
-#set(CMAKE_C_COMPILER gcc)
-#set(CMAKE_EXPORT_COMPILE_COMMANDS true)
+set(CMAKE_C_COMPILER gcc)
+set(CMAKE_EXPORT_COMPILE_COMMANDS true)
 
 project(KGE)
 
-#add_compile_options(-Wall -Wextra -pedantic -Werror -std=c11)
+add_compile_options(-Wall -Wextra -pedantic -Werror -std=c11)
 
 add_subdirectory(Math)
 add_subdirectory(Collections)
