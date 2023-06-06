@@ -62,3 +62,12 @@ bool kge_update() {
 void kge_cleanup() {
 	kge_scene_free(ActiveScene);
 }
+
+int webMain() {
+	kge_init();
+	while(RUNNING) {
+		kge_update();
+	}
+	kge_cleanup();
+	return 0;
+}

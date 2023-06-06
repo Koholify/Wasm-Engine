@@ -8,22 +8,22 @@
 	<script src="GL.js"></script>
 	<script src="KGE.js"></script>
 	<script>
-		const update = Module.cwrap("kge_update", 'bool', []);
-		const cleanup = Module.cwrap("kge_cleanup", null, []);
-
-		const frame = function () {
-			let cont = update();
-			if (cont) { requestAnimationFrame(frame); }
-			else {
-				console.log('ending');
-				cleanup();
-			}
-		}
-
-		Module.onRuntimeInitialized = () => {
-			console.log('starting');
-			requestAnimationFrame(frame);
-		}
+//		const update = Module.cwrap("kge_update", 'bool', []);
+//		const cleanup = Module.cwrap("kge_cleanup", null, []);
+//
+//		const frame = function () {
+//			let cont = update();
+//			if (cont) { requestAnimationFrame(frame); }
+//			else {
+//				console.log('ending');
+//				cleanup();
+//			}
+//		}
+//
+//		Module.onRuntimeInitialized = () => {
+//			console.log('starting');
+//			requestAnimationFrame(frame);
+//		}
 
 	</script>
 </body>
