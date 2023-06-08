@@ -1,7 +1,6 @@
 #ifndef _KGE_H
 #define _KGE_H
 
-extern "C" {
 #include "Init.h"
 #include "Config.h"
 #include "Components.h"
@@ -14,6 +13,5 @@ extern "C" {
 #include "kc/set.h"
 #include "kc/llist.h"
 #include "klm.h"
-}
 
 #endif

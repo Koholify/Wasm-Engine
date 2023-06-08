@@ -16,8 +16,7 @@ if [[ $TARGET = emcc ]]; then
 elif [[ $TARGET = cheerp ]]; then
 	echo "build for cheerp"
 	echo "/opt/cheerp/bin/clang++ -target cheerp-wasm src/main.cpp Collections/src/*.c Math/src/*.c src/*.c $INCLUDES -o KGE.js"
-	clang Collections/src/*.c Math/src/*.c src/*.c -I Collections/include -I Math/include -o libKGE.a
-	/opt/cheerp/bin/clang++ -target cheerp-wasm src/main.cpp libKGE.a $INCLUDES -o KGE.js
+	/opt/cheerp/bin/clang++ -target cheerp-wasm src/*.cpp Collections/src/*.cpp Math/src/klm.cpp $INCLUDES -o KGE.js
 	mv KGE.js wasm/KGE.js
 	mv KGE.wasm wasm/KGE.wasm
 else
