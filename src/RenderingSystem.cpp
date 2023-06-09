@@ -22,7 +22,7 @@ void renderer_render_system(struct entity_manager *manager) {
 	kc_arr_free(entities);
 }
 
-void renderer_draw_entity(struct entity_manager *manager, entity_entity entity) {
+void jsrend::renderer_draw_entity(struct entity_manager *manager, entity_entity entity) {
 	const Sprite* sprite = entity_manager_read_component(manager, entity, Sprite);
 	const Transform* trans = entity_manager_read_component(manager, entity, Transform);
 

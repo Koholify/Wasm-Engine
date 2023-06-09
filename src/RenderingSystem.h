@@ -19,8 +19,8 @@ void _draw_entity_to_canvas(int texutureId, size_t color, size_t transform);
 void _clear_canvas();
 #endif
 
-namespace [[cheerp::genericjs]] jsrend {
-	[[cheerp::genericjs]] void renderer_draw_entity(struct entity_manager* manager, entity_entity entity);
+namespace jsrend {
+	void renderer_draw_entity(struct entity_manager* manager, entity_entity entity);
 }
 void renderer_render_system(struct entity_manager* manager);
 

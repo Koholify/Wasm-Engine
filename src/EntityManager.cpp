@@ -171,15 +171,17 @@ struct _entity_store _entity_store_create(entity_archetype arch) {
 	newStore.entity_list = kc_map_init(16);
 	newStore.data = NULL;
 	size_t len = kc_set_len(arch.components);
+	kc_arr_setcap(newStore.data, len);
 	kc_arr_setlen(newStore.data, len);
 	
 	size_t val;
 	kc_set_iterator it = kc_set_iter(arch.components);
 	
-	for (size_t i = 0; i < kc_arr_len(newStore.data); i++) {
+	for (size_t i = 0; i < len; i++) {
 		kc_set_next(&it, &val);
 		newStore.data[i] = kc_bytes_create(16, cp_size((COMPONENT_ENUM)val));
 	}
+
 	return newStore;
 }
 
