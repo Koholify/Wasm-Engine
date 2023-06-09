@@ -1,6 +1,7 @@
 #ifndef _KGE_ENTITIES_H
 #define _KGE_ENTITIES_H
 
+#include <cstddef>
 #include <stdbool.h>
 #include <stdarg.h>
 #include "kc/set.h"
@@ -26,6 +27,7 @@ bool _entity_archetype_has(entity_archetype arch, size_t comp);
 
 // Create new archetype with these components.
 entity_archetype _entity_archetype_create(COMPONENT_ENUM comp, ...);
+entity_archetype _entity_archetype_create(size_t comp, ...);
 
 // Deallocate memory used by archetype.
 void entity_archetype_free(entity_archetype arch);

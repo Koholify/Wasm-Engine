@@ -4,7 +4,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS true)
 
 project(KGE)
 
-add_compile_options(-Wall -Wextra -pedantic -std=c++17)
+add_compile_options(-Wall -Wextra -pedantic -std=c++17 -I /opt/cheerp/include/client)
 
 add_subdirectory(Math)
 add_subdirectory(Collections)

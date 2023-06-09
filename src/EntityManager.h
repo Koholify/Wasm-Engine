@@ -60,9 +60,9 @@ void _entity_manager_remove_component(struct entity_manager* manager, entity_ent
 #define entity_manager_remove_component(manager, entity, cp) _entity_manager_remove_component(manager, entity, cp_type(cp))
 
 // Get a copy of the component.
-#define entity_manager_get_component(manager, entity, t, cp) _entity_manager_get_component_and_copy(manager, entity, cp_type(cp), t)
+#define entity_manager_get_component(manager, entity, t, cp) _entity_manager_get_component_and_copy(manager, entity, (COMPONENT_ENUM)cp_type(cp), t)
 // Get a const * to the component.
-#define entity_manager_read_component(manager, entity, cp) (const cp*)_entity_manager_get_component(manager, entity, cp_type(cp))
+#define entity_manager_read_component(manager, entity, cp) (const cp*)_entity_manager_get_component(manager, entity, (COMPONENT_ENUM)cp_type(cp))
 
 // Update component.
 void entity_manager_set_component(
@@ -86,10 +86,7 @@ void _entity_store_remove_entity(
 		entity_entity entity);
 
 // Get a component from entity in the entity store.
-const void* _entity_store_get_component(
-		struct _entity_store* store,
-		entity_entity entity,
-		COMPONENT_ENUM component);
+const void* _entity_store_get_component(struct _entity_store* store, entity_entity entity, COMPONENT_ENUM component);
 
 // Update component in entity store.
 void _entity_store_set_component(

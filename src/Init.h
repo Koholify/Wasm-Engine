@@ -2,9 +2,10 @@
 #define _KGE_INIT_H
 
 #include <stdbool.h>
+#include <cheerp/clientlib.h>
 
-void kge_init();
-void kge_cleanup();
-bool kge_update();
+[[cheerp::jsexport]] void kge_init();
+[[cheerp::jsexport]] void kge_cleanup();
+[[cheerp::jsexport]] bool kge_update();
 
 #endif

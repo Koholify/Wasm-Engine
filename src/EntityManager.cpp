@@ -77,7 +77,7 @@ static void all_job1(kc_map_item* i, void* l) {
 }
 entity_entity* entity_manager_all_entities(struct entity_manager* manager) {
 	entity_entity* all = NULL;
-	kc_arr_setcap(all, kc_map_len(manager->entity_list) + 1);
+	all = kc_arr_setcap(all, kc_map_len(manager->entity_list) + 1);
 	kc_map_foreach(manager->entity_list, &all, all_job1);
 	return  all;
 }
@@ -121,8 +121,9 @@ static void copy_entity_data(struct _entity_store* a, struct _entity_store* b, e
 	kc_set_iterator it = kc_set_iter(arch.components);
 	size_t val;
 	while(kc_set_next(&it, &val)) {
-		const void* cp = _entity_store_get_component(b, entity, val);
-		_entity_store_set_component(a, entity, val, cp);
+		COMPONENT_ENUM ce = (COMPONENT_ENUM)val;
+		const void* cp = _entity_store_get_component(b, entity, ce);
+		_entity_store_set_component(a, entity, ce, cp);
 	}
 }
 void _entity_manager_add_component(struct entity_manager* manager, entity_entity entity, COMPONENT_ENUM cp) {
@@ -177,7 +178,7 @@ struct _entity_store _entity_store_create(entity_archetype arch) {
 	
 	for (size_t i = 0; i < kc_arr_len(newStore.data); i++) {
 		kc_set_next(&it, &val);
-		newStore.data[i] = kc_bytes_create(16, cp_size(val));
+		newStore.data[i] = kc_bytes_create(16, cp_size((COMPONENT_ENUM)val));
 	}
 	return newStore;
 }

@@ -16,9 +16,10 @@ if [[ $TARGET = emcc ]]; then
 elif [[ $TARGET = cheerp ]]; then
 	echo "build for cheerp"
 	echo "/opt/cheerp/bin/clang++ -target cheerp-wasm src/main.cpp Collections/src/*.c Math/src/*.c src/*.c $INCLUDES -o KGE.js"
-	/opt/cheerp/bin/clang++ -target cheerp-wasm src/*.cpp Collections/src/*.cpp Math/src/klm.cpp $INCLUDES -o KGE.js
+	/opt/cheerp/bin/clang++ -O0 -target cheerp-wasm -cheerp-linear-output=wasm -cheerp-pretty-code -cheerp-linear-heap-size=64 -cheerp-sourcemap-standalone src/*.cpp Collections/src/*.cpp Math/src/klm.cpp $INCLUDES -o KGE.js -g -cheerp-sourcemap=KGE.js.map
 	mv KGE.js wasm/KGE.js
 	mv KGE.wasm wasm/KGE.wasm
+	mv KGE.js.map wasm/KGE.js.map
 else
 	echo "build for term"
 	echo "RUN CMAKE"

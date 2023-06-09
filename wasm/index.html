@@ -10,20 +10,20 @@
 	<script>
 //		const update = Module.cwrap("kge_update", 'bool', []);
 //		const cleanup = Module.cwrap("kge_cleanup", null, []);
-//
-//		const frame = function () {
-//			let cont = update();
-//			if (cont) { requestAnimationFrame(frame); }
-//			else {
-//				console.log('ending');
-//				cleanup();
-//			}
-//		}
-//
-//		Module.onRuntimeInitialized = () => {
-//			console.log('starting');
-//			requestAnimationFrame(frame);
-//		}
 
+		const frame = function () {
+			let cont = kge_update();
+			if (cont) { requestAnimationFrame(frame); }
+			else {
+				console.log('ending');
+				kge_cleanup();
+			}
+		}
+
+		const _launch = function () {
+			console.log('starting');
+			kge_init();
+			requestAnimationFrame(frame);
+		}
 	</script>
 </body>

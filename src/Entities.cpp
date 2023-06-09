@@ -23,6 +23,20 @@ entity_archetype _entity_archetype_create(COMPONENT_ENUM comp, ...) {
 	return arch;
 }
 
+entity_archetype _entity_archetype_create(size_t comp, ...) {
+	entity_archetype arch;
+	arch.components = kc_set_init(16);
+	va_list args;
+	va_start(args, comp);
+	while(comp) {
+		kc_set_set(&arch.components, comp);
+		comp = va_arg(args, COMPONENT_ENUM);
+	}
+
+	va_end(args);
+	return arch;
+}
+
 void entity_archetype_add_type(entity_archetype* arch, COMPONENT_ENUM cp) {
 	kc_set_set(&arch->components, cp);
 }

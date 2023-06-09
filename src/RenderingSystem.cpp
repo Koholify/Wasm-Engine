@@ -3,16 +3,19 @@
 #include "Entities.h"
 #include "EntityManager.h"
 #include "kc/array.h"
+#include <iterator>
 #include <stddef.h>
+#include <cheerp/clientlib.h>
+#include <cheerp/client.h>
 
 void renderer_render_system(struct entity_manager *manager) {
 	entity_archetype renderable = entity_archetype_create(cp_type(Sprite), cp_type(Transform));
 	entity_entity* entities = entity_manager_query_entities(manager, renderable);
-	_clear_canvas();
-	_setup_sprite_draw();
+	client::_clear_canvas();
+	client::_setup_sprite_draw();
 
 	for (size_t i = 0; i < kc_arr_len(entities); i++) {
-		renderer_draw_entity(manager, entities[i]);
+		jsrend::renderer_draw_entity(manager, entities[i]);
 	}
 
 	entity_archetype_free(renderable);
@@ -37,7 +40,8 @@ void renderer_draw_entity(struct entity_manager *manager, entity_entity entity) 
 	mv[14] = trans->pos.z;
 	mv[13] = trans->pos.y;
 	mv[12] = trans->pos.x;
-	_draw_entity_to_canvas(sprite->id, color, mv);
+	
+	client::_draw_entity_to_canvas(sprite->id, (size_t)color, (size_t)mv);
 }
 
 #ifndef KGE_WASM

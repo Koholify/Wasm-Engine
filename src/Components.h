@@ -38,7 +38,7 @@ typedef enum COMPONENT_ENUM COMPONENT_ENUM;
 
 #define GET_COMPONENT_SIZE_COMPONENT_0 0
 #define GET_COMPONENT_SIZE_COMPONENT_COMPONENT_NONE 0
-#define cp_type(comp) ((size_t)GET_COMPONENT_VALUE_##comp)
+#define cp_type(comp) ((COMPONENT_ENUM)GET_COMPONENT_VALUE_##comp)
 #define _cp_size(enm) GET_COMPONENT_SIZE_COMPONENT_##enm
 
 size_t cp_size(COMPONENT_ENUM type);

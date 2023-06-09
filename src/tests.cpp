@@ -45,7 +45,8 @@ static int arr_test() {
 	printf("Length: %lu, Capacity %lu\n", h->length, h->capacity);
 
 	for (int i = 0; i < 8; i++) {
-		klm_vec2 v = {i, i*i};
+		float f = i;
+		klm_vec2 v = {f, f*f};
 		kc_arr_push(ints, v);
 	}
 
