@@ -149,6 +149,10 @@ const indicies = [
 ];
 gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Int16Array(indicies), gl.STATIC_DRAW);
 
+const StoredTextures = {};
+const TextureMap = {};
+let TEXTURE_COUNT = 0;
+
 const defaultTexture = gl.createTexture();
 gl.bindTexture(gl.TEXTURE_2D, defaultTexture);
 gl.texImage2D(
@@ -161,3 +165,7 @@ gl.texImage2D(
   gl.RGBA, // src format
   gl.UNSIGNED_BYTE, // src type
   new Uint8Array([255, 255, 255, 255]));
+
+StoredTextures['default'] = ++TEXTURE_COUNT;
+TextureMap[TEXTURE_COUNT] = defaultTexture;
+

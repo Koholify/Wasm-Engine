@@ -1,7 +1,6 @@
 #ifndef _KGE_ENTITIES_H
 #define _KGE_ENTITIES_H
 
-#include <cstddef>
 #include <stdbool.h>
 #include <stdarg.h>
 #include "kc/set.h"
