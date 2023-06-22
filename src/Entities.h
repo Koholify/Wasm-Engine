@@ -3,8 +3,8 @@
 
 #include <stdbool.h>
 #include <stdarg.h>
-#include "kc/set.h"
 #include "Components.h"
+#include <unordered_set>
 
 // Check if component is present in archetype.
 #define entity_archetype_has(arch, comp) _entity_archetype_has(arch, cp_type(comp))
@@ -13,7 +13,7 @@
 
 // Set wrapper for dealing with entity component combinations.
 typedef struct entity_archetype {
-	kc_set components;
+	std::unordered_set<COMPONENT_ENUM> components;
 } entity_archetype;
 
 // Entity reference number.

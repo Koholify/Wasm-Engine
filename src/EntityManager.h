@@ -8,18 +8,20 @@
 #include <assert.h>
 #include <stddef.h>
 #include <string.h>
+#include <map>
+#include <vector>
 
 // Used by the entity_manager to store entities of like types.
 struct _entity_store {
 	entity_archetype type;
 	kc_map entity_list;
-	kc_byte_array** data;
+	std::map<COMPONENT_ENUM, kc_byte_array*> data;
 };
 
 // Store entity components for use.
 struct entity_manager {
 	struct kc_map entity_list;
-	struct _entity_store* data_store;
+	struct std::vector<_entity_store*> data_store;
 };
 
 // Create instance of entity_manager.
@@ -72,7 +74,7 @@ void entity_manager_set_component(
 		const void* component);
 
 // create new entity store.
-struct _entity_store _entity_store_create(entity_archetype arch);
+struct _entity_store* _entity_store_create(entity_archetype arch);
 // Deallocate entity store.
 void _entity_store_free(struct _entity_store* store);
 
