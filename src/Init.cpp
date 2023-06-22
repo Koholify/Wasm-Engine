@@ -54,8 +54,8 @@ void kge_init(void) {
 	entity_archetype arch = entity_archetype_create(cp_type(Velocity), cp_type(Sprite), cp_type(Transform));
 	entity_entity entity = entity_manager_add_entity(play.manager, arch);
 
-	Sprite sprite = { .id = renderer_get_texture("default"), .color = { 1.f, 1.f, 0.f, 1.f } };
-	Transform trans = { .pos = { 0 }, .size = { 1.f, 1.f }, .rotation = 0.f };
+	Sprite sprite = { client::_get_texture_from_name(), { 1.f, 1.f, 0.f, 1.f } };
+	Transform trans = { { }, { 1.f, 1.f }, 0.f };
 	Velocity vel = { { 0.002f, 0.001f } };
 
 	entity_manager_set_component(play.manager, entity, cp_type(Sprite), &sprite);

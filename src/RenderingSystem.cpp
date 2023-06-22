@@ -26,6 +26,7 @@ void jsrend::renderer_draw_entity(struct entity_manager *manager, entity_entity 
 	const Transform* trans = entity_manager_read_component(manager, entity, Transform);
 	
 	//client::_draw_entity_to_canvas(sprite->id, (size_t)color, (size_t)mv);
+	__asm__("_draw_entity_to_canvas(1, __setVec4(%0, %1, %2, %3), __setMVPos(%4, %5, %6));": : "r"(sprite->color.x), "r"(sprite->color.y), "r"(sprite->color.z), "r"(sprite->color.w), "r"(trans->pos.x), "r"(trans->pos.y), "r"(trans->pos.z));
 }
 
 #ifndef KGE_WASM

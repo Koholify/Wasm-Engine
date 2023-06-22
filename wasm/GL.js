@@ -65,12 +65,25 @@ const compileProgram = function() {
 }
 
 const _draw_entity_to_canvas = function(id, color, mv) {
-  gl.uniform4fv(colorLoc, new Float32Array([1.0, 1.0, 1.0, 1.0]));
-  gl.uniformMatrix4fv(mvLoc, false, new Float32Array(identity4x4));
+  gl.uniform4fv(colorLoc, color);
+  gl.uniformMatrix4fv(mvLoc, false, mv);
   gl.activeTexture(gl.TEXTURE0);
   gl.bindTexture(gl.TEXTURE_2D, defaultTexture);
   gl.uniform1i(textureLoc, 0);
   gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0);
+}
+
+const __setVec4 = function(x, y, z, w) {
+  return new Float32Array([x, y, z, w]);
+}
+
+const __setMVPos = function(x, y, z) {
+  return new Float32Array([
+    1.0, 0.0, 0.0, 0.0,
+    0.0, 1.0, 0.0, 0.0,
+    0.0, 0.0, 1.0, 0.0,
+    x, y, z, 1.0
+  ]);
 }
 
 const _clear_canvas = function() {
@@ -89,6 +102,10 @@ const _setup_sprite_draw = function() {
   gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, indexBuffer);
 
   gl.uniformMatrix4fv(projLoc, false, new Float32Array(identity4x4));
+}
+
+const _get_texture_from_name = function() {
+    return defaultTexture;
 }
 
 const canvas = document.getElementById('gl-canvas');
